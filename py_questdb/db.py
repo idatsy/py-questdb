@@ -1,7 +1,7 @@
 """Module for interacting with QuestDB."""
 
 from types import TracebackType
-from typing import Iterable, Type, overload, AsyncGenerator, Any
+from typing import Iterable, Type, overload, AsyncGenerator, Any, TypeVar
 
 import aiohttp
 import pandas as pd
@@ -10,6 +10,9 @@ import requests
 from questdb.ingress import Sender
 
 from py_questdb.db_types import QuestMessage, QuestDBResponse, TYPE_MAP, convert_types
+
+
+T = TypeVar("T")
 
 
 class QuestDB:
@@ -122,7 +125,7 @@ class QuestDB:
         return msgspec.json.decode(response, type=QuestDBResponse)
 
     @staticmethod
-    def parse_and_yield_query_response[T](
+    def parse_and_yield_query_response(
         response: QuestDBResponse, into_type: Type[T] | None
     ) -> Iterable[T] | Iterable[dict]:
         """
@@ -148,9 +151,9 @@ class QuestDB:
     async def query(self, query_string: str) -> AsyncGenerator[dict[str, Any], None]: ...
 
     @overload
-    async def query[T](self, query_string: str, into_type: Type[T]) -> AsyncGenerator[T, None]: ...
+    async def query(self, query_string: str, into_type: Type[T]) -> AsyncGenerator[T, None]: ...
 
-    async def query[T](self, query_string: str, into_type: Type[T] | None = None) -> AsyncGenerator[T, None]:
+    async def query(self, query_string: str, into_type: Type[T] | None = None) -> AsyncGenerator[T, None]:
         """
         Perform an asynchronous query and yield the results.
 
@@ -170,9 +173,9 @@ class QuestDB:
     def query_sync(self, query_string: str) -> Iterable[dict[str, Any]]: ...
 
     @overload
-    def query_sync[T](self, query_string: str, into_type: Type[T]) -> Iterable[T]: ...
+    def query_sync(self, query_string: str, into_type: Type[T]) -> Iterable[T]: ...
 
-    def query_sync[T](self, query_string: str, into_type: Type[T] | None = None) -> Iterable[T] | Iterable[dict]:
+    def query_sync(self, query_string: str, into_type: Type[T] | None = None) -> Iterable[T] | Iterable[dict]:
         """
         Perform a synchronous query and return an iterable of results.
 
