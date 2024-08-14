@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "py-questdb"
+version = "0.1.0"
+description = "Python interface for QuestDB"
+authors = ["idatsy <stefan@ranvier.co.uk>"]
+license = "MIT"
+
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+questdb = "^2.0.3"
+msgspec = "^0.18.6"
+aiohttp = "^3.10.3"
+requests = "^2.32.3"
+pandas = "^2.2.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.2"
+ruff = "^0.5.7"
+pytest-asyncio = "^0.23.8"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

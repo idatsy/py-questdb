@@ -1,0 +1,25 @@
+name: tests
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12.2'
+
+    - name: Install dependencies
+      run: |
+        pip install poetry
+        poetry install --with dev
+
+    - name: Lint with ruff
+      run: poetry run ruff format --line-length 125 && poetry run ruff check
+
+    - name: Run pytest
+      run: poetry run pytest tests/
