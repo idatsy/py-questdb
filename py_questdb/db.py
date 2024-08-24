@@ -142,7 +142,9 @@ class QuestDB:
 
         for row in response.dataset:
             converted_row = {
-                field.name: converter(value) for field, converter, value in zip(response.columns, type_converter, row)
+                field.name: converter(value) if value is not None else None
+                for field, converter, value
+                in zip(response.columns, type_converter, row)
             }
 
             yield into_type(**converted_row) if into_type else converted_row

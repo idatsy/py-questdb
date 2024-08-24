@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "py-questdb"
-version = "0.0.1"
+version = "0.0.2"
 description = "Python interface for QuestDB"
 authors = ["idatsy <stefan@ranvier.co.uk>"]
 license = "MIT"
