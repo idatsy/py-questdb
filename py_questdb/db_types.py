@@ -17,6 +17,7 @@ TYPE_MAP = {
     "DOUBLE": float,
     "VARCHAR": str,
     "TIMESTAMP": datetime.datetime.fromisoformat,
+    "STRING": str,
 }
 
 
