@@ -37,6 +37,10 @@ class QuestDB:
         self.client.establish()  # unclear if this blocks, API keeps changing!
         self.session = None
 
+    def flush(self) -> None:
+        """Flush the QuestDB client buffer."""
+        self.client.flush()
+
     def write(self, *messages: QuestMessage) -> None:
         """
         Write multiple messages to QuestDB.
@@ -125,9 +129,7 @@ class QuestDB:
         return msgspec.json.decode(response, type=QuestDBResponse)
 
     @staticmethod
-    def parse_and_yield_query_response(
-        response: QuestDBResponse, into_type: Type[T] | None
-    ) -> Iterable[T] | Iterable[dict]:
+    def parse_and_yield_query_response(response: QuestDBResponse, into_type: Type[T] | None) -> Iterable[T] | Iterable[dict]:
         """
         Parse and yield rows from a QuestDBResponse.
 
@@ -143,8 +145,7 @@ class QuestDB:
         for row in response.dataset:
             converted_row = {
                 field.name: converter(value) if value is not None else None
-                for field, converter, value
-                in zip(response.columns, type_converter, row)
+                for field, converter, value in zip(response.columns, type_converter, row)
             }
 
             yield into_type(**converted_row) if into_type else converted_row
@@ -238,6 +239,8 @@ class QuestDB:
 
     async def close(self):
         """Close the QuestDB connection and any open sessions."""
+        self.flush()
+
         if self.session:
             await self.session.close()
         self.client.close()
@@ -251,5 +254,7 @@ class QuestDB:
         self, exc_type: Type[BaseException] | None, exc_val: BaseException | None, exc_tb: TracebackType | None
     ) -> None:
         """Async context manager exit."""
+        self.flush()
+
         if self.session:
             await self.close()
