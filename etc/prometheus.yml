@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 5s
+  external_labels:
+    monitor: 'questdb'
+
+scrape_configs:
+  - job_name: 'questdb'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['questdb:9003']
+
+  - job_name: 'node'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['node-exporter:9100']
