@@ -13,6 +13,7 @@ QuestDBField = Union[None, bool, int, float, str, TimestampMicros, datetime.date
 TYPE_MAP = {
     "SYMBOL": str,
     "BOOLEAN": bool,
+    "SHORT": int,
     "LONG": int,
     "DOUBLE": float,
     "VARCHAR": str,
